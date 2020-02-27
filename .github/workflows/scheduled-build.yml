@@ -1,9 +1,6 @@
 name: Update Docker Image
 
 on:
-  push:
-    branches:
-      - actions-test
   schedule:
     - cron: '05 01 * * *'
 
@@ -22,13 +19,10 @@ jobs:
         run: docker build . -t "${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest"
       - run: docker run --rm "${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest" --version
       - run: docker images
-
       - name: Login to registry
         env:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-          SECRET_TEST: ${{ secrets.SECRET_TEST }}
         run: |
-          echo $SECRET_TEST
           echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
       - name: Push to Docker Hub
         run: docker push "${DOCKERHUB_USER}/${DOCKERHUB_REPO}"
