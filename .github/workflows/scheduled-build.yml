@@ -1,0 +1,27 @@
+name: Update Docker Image
+
+#on:
+#  schedule:
+#    - cron: '05 01 * * *'
+
+env:
+  DOCKERHUB_USER: tomoyamachi
+  DOCKERHUB_REPO: jq
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build a new image
+        run: docker build . -t "${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest"
+      - run: docker run --rm "${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest" --version
+      - run: docker images
+
+      - name: Login to Registries
+        env:
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        run: |
+          echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
+
+      - name: Push to Docker Hub
+        run: docker push "${DOCKERHUB_USER}/${DOCKERHUB_REPO}"
