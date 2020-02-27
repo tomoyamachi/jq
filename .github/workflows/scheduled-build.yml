@@ -1,6 +1,9 @@
 name: Update Docker Image
 
 on:
+  push:
+    branches:
+      - actions-test
   schedule:
     - cron: '05 01 * * *'
 
