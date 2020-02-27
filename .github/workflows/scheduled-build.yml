@@ -15,6 +15,9 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
       - name: Build a new image
         run: docker build . -t "${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest"
       - run: docker run --rm "${DOCKERHUB_USER}/${DOCKERHUB_REPO}:latest" --version
