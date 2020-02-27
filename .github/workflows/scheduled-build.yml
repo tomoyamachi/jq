@@ -1,8 +1,8 @@
 name: Update Docker Image
 
-#on:
-#  schedule:
-#    - cron: '05 01 * * *'
+on:
+  schedule:
+    - cron: '05 01 * * *'
 
 env:
   DOCKERHUB_USER: tomoyamachi
